@@ -21,6 +21,8 @@ def get_diagnosis(dicom_path: str)->None:
     patologias da imagem DICOM especificada
     Args:
         dicom_path (str): Caminho do arquivo da imagem DICOM
+    Returns:
+        dict[str, float]: Dicionário que associa cada patologia à sua probabilidade de existência
     """
     # Prepare the image:
     img = xrv.utils.read_xray_dcm(dicom_path)
