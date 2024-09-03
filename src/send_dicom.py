@@ -40,4 +40,4 @@ def post_file(file_path: str)->None:
         print(resp)
         print(content)
 
-post_file('dicom_samples/id_0a1f875b-a67fe221-684adc8a-39b1c19b-266b948b/Study_22028902.48449501.25544157.65169404.59411193/Series_57322992.77011198.27473253.16855266.10345337/image-43591434-24105909-95501830-31186664-56232345.dcm')
+post_file('relatorio_estruturado.dcm')

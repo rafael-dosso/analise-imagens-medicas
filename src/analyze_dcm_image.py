@@ -15,15 +15,15 @@ def convert_float32_to_float(input_dict):
             input_dict[key] = float(value)
     return input_dict
 
-def get_diagnosis(dicom_image_path: str)->None:
+def get_diagnosis(dicom_path: str)->None:
     """
     Utiliza o modelo pré-treinado do torchxrayvision para classificar a probabilidade de
     patologias da imagem DICOM especificada
     Args:
-        dicom_image_path (str): Caminho do arquivo da imagem DICOM
+        dicom_path (str): Caminho do arquivo da imagem DICOM
     """
     # Prepare the image:
-    img = xrv.utils.read_xray_dcm(dicom_image_path)
+    img = xrv.utils.read_xray_dcm(dicom_path)
     # img = xrv.datasets.normalize(img, 1024) # convert 8-bit image to [-1024, 1024] range
     img = (img - img.min()) / (img.max() - img.min()) * 2048 - 1024 # normalizar imagem
 
