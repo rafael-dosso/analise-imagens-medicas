@@ -37,15 +37,6 @@ def create_sr(dicom_path:str)->None:
     sr.StudyDate = dt.strftime('%Y%m%d')
     sr.StudyTime = dt.strftime('%H%M%S')
 
-    # Criar um novo Dataset para o conteúdo do relatório
-    content_item = Dataset()
-    content_item.ValueType = "TEXT"
-    content_item.ConceptNameCodeSequence = [Dataset()]
-    content_item.ConceptNameCodeSequence[0].CodeValue = "121072"
-    content_item.ConceptNameCodeSequence[0].CodingSchemeDesignator = "DCM"
-    content_item.ConceptNameCodeSequence[0].CodeMeaning = "Observação"
-    content_item.TextValue = "Este é um exemplo de relatório estruturado."
-
     diagnosis = get_diagnosis(dicom_path)
 
     # Criar uma lista para armazenar os itens de conteúdo
@@ -59,13 +50,16 @@ def create_sr(dicom_path:str)->None:
         content_item.ConceptNameCodeSequence[0].CodeValue = "121072"  # Código genérico para Observação
         content_item.ConceptNameCodeSequence[0].CodingSchemeDesignator = "DCM"
         content_item.ConceptNameCodeSequence[0].CodeMeaning = pathology
-        content_item.TextValue = f"Probabilidade: {probabilty:.2f}"  # Formatar a probabilidade com duas casas decimais
+        content_item.MeasuredValueSequence = [Dataset()]
+        content_item.MeasuredValueSequence[0].MeasurementUnitsCodeSequence = [Dataset()]
+        content_item.MeasuredValueSequence[0].MeasurementUnitsCodeSequence[0].CodeMeaning = "Probability of pathology in percentage"
+        content_item.MeasuredValueSequence[0].NumericValue = f'{probabilty*100:.2f}'
         
         # Adicionar o item de conteúdo à lista
         content_items.append(content_item)
 
     # Adicionar o item de conteúdo à sequência
-    sr.ContentSequence = [content_item]
+    sr.ContentSequence = content_items
 
     # Definir o caminho do arquivo
     output_file = "relatorio_estruturado.dcm"

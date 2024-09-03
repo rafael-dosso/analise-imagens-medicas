@@ -39,5 +39,7 @@ def get_diagnosis(dicom_path: str)->None:
     model = xrv.models.DenseNet(weights="densenet121-res224-all")
     outputs = model(img[None,...]) # or model.features(img[None,...]) 
 
+    print("Diagnóstico obtido com sucesso!")
+
     result = dict(zip(model.pathologies,outputs[0].detach().numpy()))
     return convert_float32_to_float(result)
