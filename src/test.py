@@ -2,12 +2,11 @@ import pydicom
 from pydicom.dataset import Dataset, FileDataset
 from datetime import datetime
 
+# Lê o arquivo original para usar suas informações no cabeçalho do SR
+dcm = pydicom.dcmread('dicom_samples/id_0a1f875b-a67fe221-684adc8a-39b1c19b-266b948b/Study_22028902.48449501.25544157.65169404.59411193/Series_57322992.77011198.27473253.16855266.10345337/image-43591434-24105909-95501830-31186664-56232345.dcm')
+
 # Criar um novo conjunto de dados com um cabeçalho de arquivo DICOM
-file_meta = Dataset()
-file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.88.22"  # UID para DICOM SR
-file_meta.MediaStorageSOPInstanceUID = "1.2.3.4.5.6.7"
-file_meta.ImplementationClassUID = "1.2.3.4"
-file_meta.TransferSyntaxUID = pydicom.uid.ImplicitVRLittleEndian
+file_meta = dcm.file_meta
 
 # Criar um novo conjunto de dados DICOM
 ds = FileDataset("relatorio_estruturado.dcm", {}, file_meta=file_meta, preamble=b"\0" * 128)
@@ -15,11 +14,6 @@ ds = FileDataset("relatorio_estruturado.dcm", {}, file_meta=file_meta, preamble=
 # Definir as propriedades de codificação
 ds.is_little_endian = True
 ds.is_implicit_VR = True
-
-# Definir o cabeçalho do metafile DICOM
-ds.file_meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.88.22"
-ds.file_meta.MediaStorageSOPInstanceUID = "1.2.3.4.5.6.7"
-ds.file_meta.ImplementationClassUID = "1.2.3.4"
 
 # Adicionar metadados básicos
 ds.PatientName = "Nome do Paciente"
