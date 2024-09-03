@@ -11,24 +11,27 @@ def main():
     dicom_files = path.rglob("*.dcm")  # rglob é usado para buscar arquivos recursivamente
     
     for file_path in dicom_files:
-        if file_path.name == 'structured_report.dcm': continue
+        if file_path.name == 'structured_report.dcm': continue # Ignora os arquivos SR
 
-        print('\n====================================\n')
-        # Sobe o arquivo para o OrthanC
-        print(f"Arquivo atual: {file_path.name}")
-        post_file(file_path)
+        try:
+            print('\n====================================\n')
+            # Sobe o arquivo para o OrthanC
+            print(f"Arquivo atual: {file_path.name}")
+            post_file(file_path)
 
-        file_folder = str(file_path.parent)
-        diagnosis = get_diagnosis(file_path)
+            diagnosis = get_diagnosis(file_path)
 
-        # Registra um .json com as conslusões do modelo no mesmo diretório do .dcm
-        with open(file_folder + '/diagnosis.json', 'w') as json_file:
-            json.dump(diagnosis, json_file, indent=4)
+            # Registra um .json com as conslusões do modelo no mesmo diretório do .dcm
+            file_folder = str(file_path.parent)
+            with open(file_folder + '/diagnosis.json', 'w') as json_file:
+                json.dump(diagnosis, json_file, indent=4)
 
-        # Cria o SR para a imagem e envia para o Orthanc
-        sr_path = file_folder + '/structured_report.dcm'
-        create_sr(file_path, sr_path, diagnosis=diagnosis)
-        post_file(sr_path)
+            # Cria o SR para a imagem e envia para o Orthanc
+            sr_path = file_folder + '/structured_report.dcm'
+            create_sr(file_path, sr_path, diagnosis=diagnosis)
+            post_file(sr_path)
+        except Exception as e:
+            print('Ocorreu um erro:', e)
 
         
 
