@@ -26,11 +26,4 @@ def post_file(file_path: str)->None:
         print("Erro ao enviar o arquivo")
         print(response.text)
 
-# dicom_file_path = 'dicom_samples/id_0a0c2c8f-a36a1e82-a4857225-5a2af2a6-c7be16c1/Study_12840378.32185825.64169999.71049659.46899097/Series_60731327.33236805.18319358.84233616.48423037/image-77089611-78785961-69826278-95000740-26294623.dcm'
-# sr_destination_path = 'dicom_samples/id_0a0c2c8f-a36a1e82-a4857225-5a2af2a6-c7be16c1/Study_12840378.32185825.64169999.71049659.46899097/Series_60731327.33236805.18319358.84233616.48423037/diagnostic_report_sr.dcm'
-
-# post_file(dicom_file_path)
-
-# create_dicom_sr(dicom_file_path, sr_destination_path)
-
-# post_file('test_report.dcm')
+post_file('relatorio_estruturado.dcm')
