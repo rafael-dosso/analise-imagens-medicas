@@ -40,6 +40,9 @@ def main():
             post_file(sr_path)
         except Exception as e:
             print('Ocorreu um erro com o arquivo. Mensagem de erro:', e)
+        
+    print('\n============================================\n')
+    print("Processo terminado!")
 
 if __name__ == "__main__":
     main()
