@@ -1,0 +1,6 @@
+torchxrayvision
+torch
+torchvision
+numpy
+pydicom
+httplib2

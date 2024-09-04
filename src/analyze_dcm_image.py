@@ -2,6 +2,7 @@ import torchxrayvision as xrv
 import torch, torchvision
 import numpy as np
 import pydicom
+import warnings
 
 def convert_float32_to_float(input_dict: dict[str,int])->None:
     """
@@ -9,37 +10,43 @@ def convert_float32_to_float(input_dict: dict[str,int])->None:
     Args:
         input_dict (dict): O dicionário a ser iterado.
     Returns:
-        dict: O dicionário com valores convertidos para float.
+        dict: Novo dicionário com valores convertidos para float.
     """
     for key, value in input_dict.items():
         if isinstance(value, np.float32):
             input_dict[key] = float(value)
     return input_dict
 
-def read_and_adjust_dicom(dicom_path: str)->None:
-    # Ler o arquivo DICOM
-    dcm = pydicom.dcmread(dicom_path)
+def read_xray_dcm(path: str) -> np.ndarray:
+    """read a dicom-like file and convert to numpy array 
 
-    # Extrair a imagem do DICOM
-    image = dcm.pixel_array
+    Args:
+        path (PathLike): path to the dicom file
 
-    # Verificar o valor máximo da imagem
-    max_value = np.max(image)
-    print(f"Valor máximo da imagem: {max_value}")
+    Returns:
+        ndarray: 2D single array image for a dicom image scaled between -1024, 1024
+    """
+    # get the pixel array
+    ds = pydicom.dcmread(path, force=True)
 
-    # Redimensionar a imagem se o valor máximo for maior que 4095
-    if max_value > 4095:
-        print("Redimensionando a imagem para 12 bits.")
-        # Normalizar a imagem para o intervalo de 0 a 4095
-        image = (image / max_value) * 4095
-        image = image.astype(np.uint16)  # Converter para 16 bits
+    # we have not tested RGB, YBR_FULL, or YBR_FULL_422 yet.
+    if ds.PhotometricInterpretation not in ['MONOCHROME1', 'MONOCHROME2']:
+        raise NotImplementedError(f'PhotometricInterpretation `{ds.PhotometricInterpretation}` is not yet supported.')
 
-    # Agora você pode usar a função read_xray_dcm
-    try:
-        # processed_image = xrv.utils.read_xray_dcm(image)
-        return image
-    except Exception as e:
-        raise Exception(f"Erro ao processar a imagem: {e}")
+    data = ds.pixel_array
+    
+    # LUT for human friendly view
+    data = pydicom.pixel_data_handlers.util.apply_voi_lut(data, ds, index=0)
+
+    # `MONOCHROME1` have an inverted view; Bones are black; background is white
+    # https://web.archive.org/web/20150920230923/http://www.mccauslandcenter.sc.edu/mricro/dicom/index.html
+    if ds.PhotometricInterpretation == "MONOCHROME1":
+        warnings.warn(f"Coverting MONOCHROME1 to MONOCHROME2 interpretation for file: {path}. Can be avoided by setting `fix_monochrome=False`")
+        data = data.max() - data
+
+    # normalize data to [-1024, 1024]
+    data = xrv.utils.normalize(data, data.max())
+    return data
 
 def get_diagnosis(dicom_path: str)->None:
     """
@@ -51,9 +58,9 @@ def get_diagnosis(dicom_path: str)->None:
         dict[str, float]: Dicionário que associa cada patologia à sua probabilidade de existência
     """
     # Prepare the image:
-    img = read_and_adjust_dicom(dicom_path)
-    # img = xrv.datasets.normalize(img, 1024) # convert 8-bit image to [-1024, 1024] range
-    img = (img - img.min()) / (img.max() - img.min()) * 2048 - 1024 # normalizar imagem
+    img = read_xray_dcm(dicom_path)
+    # Normalizar imagem
+    img = (img - img.min()) / (img.max() - img.min()) * 2048 - 1024
 
     if len(img.shape) == 2:
         img = img[np.newaxis, ...]
@@ -71,7 +78,3 @@ def get_diagnosis(dicom_path: str)->None:
 
     result = dict(zip(model.pathologies,outputs[0].detach().numpy()))
     return convert_float32_to_float(result)
-
-d = get_diagnosis('dicom_samples/id_0a1f875b-a67fe221-684adc8a-39b1c19b-266b948b/Study_22028902.48449501.25544157.65169404.59411193/Series_84639027.32441790.39783484.46756843.74807336/image-37893342-90788293-97674894-30563722-15937211.dcm')
-for k, v in d.items():
-    print(f"{k}: {v}")

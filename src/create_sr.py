@@ -15,7 +15,6 @@ def create_sr(dicom_path:str, sr_output_path: str, diagnosis=None)->None:
         sr_output_path (str): Caminho em que será guardado o relatório
         diagnosis (dict[str, int]): Parâmetro opcional para anexar o dicionário do diagnóstico se ele já foi obtido
     """
-
     # Lê o arquivo original para usar suas informações no cabeçalho do SR
     dcm = pydicom.dcmread(dicom_path)
 
@@ -46,6 +45,7 @@ def create_sr(dicom_path:str, sr_output_path: str, diagnosis=None)->None:
     sr.StudyDate = dt.strftime('%Y%m%d')
     sr.StudyTime = dt.strftime('%H%M%S')
 
+    # Obtém o diagnóstico se ele não foi gerado ainda
     if not diagnosis:
         diagnosis = get_diagnosis(dicom_path)
 

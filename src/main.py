@@ -6,6 +6,14 @@ import numpy as np
 import json
 
 def main():
+    """
+    Lê cada arquivo DICOM da pasta dicom_samples/ e executa os seguintes passos:
+        1. Envia-o para o PACs Orthanc;
+        2. Analisa sua imagem e obtém um diagnóstico com o modelo pré treinado do
+        torchxrayvision, e guarda-o em um json na mesma localização do arquivo;
+        3. Cria um DICOM Structured SR para a imagem inicial com os diagnósticos obtidos e
+        o envia para o PACs Orthanc;
+    """
     # Lista todos os arquivos .dcm na pasta e aplica as regras de negócio a todos eles
     path = Path("dicom_samples/")
     dicom_files = path.rglob("*.dcm")  # rglob é usado para buscar arquivos recursivamente
@@ -14,7 +22,7 @@ def main():
         if file_path.name == 'structured_report.dcm': continue # Ignora os arquivos SR
 
         try:
-            print('\n====================================\n')
+            print('\n============================================\n')
             # Sobe o arquivo para o OrthanC
             print(f"Arquivo atual: {file_path.name}")
             post_file(file_path)
@@ -31,12 +39,7 @@ def main():
             create_sr(file_path, sr_path, diagnosis=diagnosis)
             post_file(sr_path)
         except Exception as e:
-            print('Ocorreu um erro:', e)
-
-        
-
-
-        
+            print('Ocorreu um erro com o arquivo. Mensagem de erro:', e)
 
 if __name__ == "__main__":
     main()

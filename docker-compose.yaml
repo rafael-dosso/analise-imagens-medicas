@@ -1,0 +1,19 @@
+version: '3'
+services:
+  api:
+    image: jodogne/orthanc 
+    ports:
+      - "8042:8042"  # Mapeia a porta 5000 do contêiner para a porta 5000 do host (ajuste conforme necessário)
+    networks:
+      - mynetwork
+
+  app:
+    image: teste3
+    depends_on:
+      - api
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
