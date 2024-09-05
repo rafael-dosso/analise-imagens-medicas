@@ -36,14 +36,20 @@ O objetivo principal foi configurar um sistema PACS OrthanC, manipular arquivos 
 
 3. **Construa a imagem Docker da aplicação**:
    ```bash
-    docker build -t rafael-dosso-miclab .
+    sudo docker build -t rafael-dosso-miclab .
    ```
+   Este passo pode demorar um pouco, pois as instalações do TorchXRayVision são extensas.
 4. **Execute o contêiner composto da aplicação e do PACs Orthanc**:
    ```bash
-    docker compose up --build
+    sudo docker compose up --build
    ```
 
-O visualizador web do Orthanc já estará acessível no endereço [localhost:8042](http://localhost:8042) após a execução do Docker Compose, e em seguida os arquivos serão enviados pela aplicação Python
+O visualizador web do Orthanc já estará acessível no endereço [localhost:8042](http://localhost:8042) após a execução do Docker Compose, e em seguida os você poderá acompanhar o envio dos arquivos pelos logs da aplicação Python.
+
+5. **Após o uso, termine a aplicação:**:
+   ```bash
+    sudo docker compose down
+   ```
 
 #### Execução local
 
@@ -66,7 +72,7 @@ Para executar o programa localmente, você deve executar a API do Orthanc na sua
 
 ### Configuração e Execução do PACS Orthanc
 
-Inicialmente, eu não tinha experiências com Docker. Após alguns estudos e consultas, consegui fazer a instalação e enetender os seus conceitos básicos. Encontrei a imagem oficial do orthanc (`jodogne/orthanc`), e, seguindo o passo a passo da documentação, não tive problemas em executá-la e ter acesso à API localmente.
+Inicialmente, eu não tinha experiência com Docker. Após alguns estudos e consultas, consegui fazer a instalação e entender os seus conceitos básicos. Encontrei a imagem oficial do orthanc (`jodogne/orthanc`), e, seguindo o passo a passo da documentação, não tive problemas em executá-la e ter acesso à API localmente.
 
 ### Envio de Arquivos DICOM
 
