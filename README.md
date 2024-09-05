@@ -44,7 +44,7 @@ O objetivo principal foi configurar um sistema PACS OrthanC, manipular arquivos 
     sudo docker compose up --build
    ```
 
-O visualizador web do Orthanc já estará acessível no endereço [localhost:8042](http://localhost:8042) após a execução do Docker Compose, e em seguida os você poderá acompanhar o envio dos arquivos pelos logs da aplicação Python. Se for pedida alguma autenticação, o usuário e senha são ambos "orthanc".
+O visualizador web do Orthanc já estará acessível no endereço [localhost:8042](http://localhost:8042) após a execução do Docker Compose, e em seguida os você poderá acompanhar o envio dos arquivos pelos logs da aplicação Python. Se for pedida alguma autenticação no PACs, o usuário e senha são ambos "orthanc".
 
 5. **Após o uso, termine a aplicação:**
    ```bash
@@ -53,7 +53,7 @@ O visualizador web do Orthanc já estará acessível no endereço [localhost:804
 
 #### Execução local
 
-Para executar o programa localmente, você deve executar a API do Orthanc na sua máquina. Nesse caso, é necessário descomentar a linha 14 do arquivo `send_dicom.py` e comentar a linha 15. Isso fará com que as requisições sejam mandadas para o localhost em vez dos endereços definidos internamente pelo Docker, garantindo o funcionamento da aplicação.
+Para executar o programa localmente, você deve executar a API do Orthanc na sua máquina. Nesse caso, é necessário descomentar a linha 11 do arquivo `send_dicom.py` e comentar a linha 12. Isso fará com que as requisições sejam mandadas para o localhost em vez dos endereços definidos internamente pelo Docker, garantindo o funcionamento da aplicação.
 
 3. **Certifique-se de que está rodando o PACs Orthanc localmente. Se não estiver, você pode usar a imagem [jodogne/orthanc](https://orthanc.uclouvain.be/book/users/docker.html):**
    ```bash

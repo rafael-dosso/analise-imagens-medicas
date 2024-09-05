@@ -5,12 +5,9 @@ import base64
 
 """
 IMPORTANTE: se você estiver rodando este código localmente, com a API do Orthanc
-na sua máquina, use a linha com o localhost. Se você for rodar a imagem gerada pelo
-dockerfile, a requisição irá para o localhost interno do docker, que não está rodando a
-API. Nesse caso, foi configurado o arquivo docker-compose para que a imagem do Orthanc
-rode simultaneamente com a imagem deste projeto. Nesse caso, use a segunda alternativa.
+na sua máquina, use a linha com  da url com o 'localhost'. Se você for rodar a imagem gerada
+pelo dockerfile, use a linha com o 'api'.
 """
-
 # orthanc_url = 'http://localhost:8042/instances' 
 orthanc_url = 'http://api:8042/instances'
 
