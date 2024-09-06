@@ -4,8 +4,6 @@ from pydicom.uid import generate_uid
 from datetime import datetime
 from analyze_dcm_image import get_diagnosis
 
-# original_dicom = pydicom.dcmread('dicom_samples/id_0a1f875b-a67fe221-684adc8a-39b1c19b-266b948b/Study_22028902.48449501.25544157.65169404.59411193/Series_57322992.77011198.27473253.16855266.10345337/image-43591434-24105909-95501830-31186664-56232345.dcm')
-
 def create_sr(dicom_path:str, sr_output_path: str, diagnosis=None)->None:
     """
     Gera um DICOM Structured Report com base no diagnóstico obtido pelo modelo a partir
@@ -41,20 +39,17 @@ def create_sr(dicom_path:str, sr_output_path: str, diagnosis=None)->None:
     sr.SOPClassUID = '1.2.840.10008.5.1.4.1.1.88.22' # Enhanced SR Storage
 
     # Adicionar campos do módulo "General Study"
-    sr.AccessionNumber = generate_uid()
     now = datetime.now()
+    sr.AccessionNumber = f'AN{now.year}-{now.month}-{now.day}-000'
     sr.StudyID = f'SR{now.year}-{now.month}-{now.day}-000'  # Tag (0020,0010)
 
     # Adicionar campos do módulo "SR Document General"
-    sr.InstanceNumber = "2"  # Tag (0020,0013)
-    # sr.PerformedProcedureStepDescription TODO
+    sr.InstanceNumber = str(int(dcm.InstanceNumber) + 1)  # Tag (0020,0013)
     sr.CompletionFlag = "COMPLETE"  # Tag (0040,A491)
     sr.VerificationFlag = "UNVERIFIED"  # Tag (0040,A493)
 
     # Adicionar campos do módulo "SR Document Series"
     sr.Modality = "SR"  # Tag (0008,0060)
-    sr.ReferencedPerformedProcedureStepSequence = Dataset()  # Tag (0008,1111)
-    sr.ReferencedPerformedProcedureStepSequence
     sr.SeriesNumber = dcm.SeriesNumber  # Tag (0020,0011)
 
     # Adicionar data e hora
@@ -65,9 +60,8 @@ def create_sr(dicom_path:str, sr_output_path: str, diagnosis=None)->None:
     sr.ContentTime = datetime.now().strftime('%H%M%S')  # Tag (0008,0033)
 
     # Obtém o diagnóstico se ele não foi gerado ainda
-    # if not diagnosis:
-    #     diagnosis = get_diagnosis(dicom_path)
-    diagnosis = get_diagnosis(dicom_path)
+    if not diagnosis:
+        diagnosis = get_diagnosis(dicom_path)
 
     # Criar uma lista para armazenar os itens de conteúdo
     content_items = []
@@ -75,7 +69,6 @@ def create_sr(dicom_path:str, sr_output_path: str, diagnosis=None)->None:
     # Adicionar cada patologia e sua probabilidade ao conteúdo
     for pathology, probabilty in diagnosis.items():
         content_item = Dataset()
-        content_item.ValueType = "TEXT"
         content_item.ConceptNameCodeSequence = [Dataset()]
         content_item.ConceptNameCodeSequence[0].CodeValue = "121072"  # Código genérico para Observação
         content_item.ConceptNameCodeSequence[0].CodingSchemeDesignator = "DCM"
@@ -94,8 +87,3 @@ def create_sr(dicom_path:str, sr_output_path: str, diagnosis=None)->None:
     # Salvar o conjunto de dados em um arquivo DICOM
     sr.save_as(sr_output_path)
     print(f"Structured Report salvo em: {sr_output_path}")
-
-input_path = 'dicom_samples/id_0a0c2c8f-a36a1e82-a4857225-5a2af2a6-c7be16c1/Study_12840378.32185825.64169999.71049659.46899097/Series_60731327.33236805.18319358.84233616.48423037/image-77089611-78785961-69826278-95000740-26294623.dcm'
-output_path = 'structured_report.dcm'
-
-create_sr(input_path, output_path)
