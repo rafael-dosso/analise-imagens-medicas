@@ -88,7 +88,7 @@ Além disso, em algumas imagens, obtive a exceção `max image value (8191) high
 
 ### Geração e Envio de DICOM SR
 
-Desenvolvi uma função para criar o DICOM SR com base nas informações das imagens e resultados do modelo. A falta de documentações e exemplos de SRs na internet foi um obstáculo. Foi difícil entender como se estruturava esse tipo de arquivo, ainda mais quando tinha que montá-lo do zero em Python. Mais uma vez, o Perplexity.AI me forneceu um panorama sobre o formato destes relatórios, e, aos poucos, foi possível montá-los. A estruturação dos dados me pareceu um pouco confusa, já que não encontrei um padrão definido sobre como expor pares de chave-valor nessa arquitetura, mas busquei a maneira que me pareceu mais clara para os implementar.
+Desenvolvi uma função para criar o DICOM SR com base nas informações das imagens e resultados do modelo. A falta de documentações e exemplos de SRs na internet foi um obstáculo. Foi difícil entender como se estruturava esse tipo de arquivo, ainda mais quando tinha que montá-lo do zero em Python. Mais uma vez, o Perplexity.AI me forneceu um panorama sobre o formato destes relatórios, e com a ajuda da biblioteca `dicom-validator`, foi possível montá-los aos poucos. A estruturação dos dados me pareceu um pouco confusa, já que não encontrei um padrão definido sobre como expor pares de chave-valor nessa arquitetura, mas busquei a maneira que me pareceu mais clara para implementá-los.
 
 ### Geração de Dockerfile
 
