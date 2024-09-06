@@ -1,4 +1,3 @@
-version: '3'
 services:
   api:
     image: jodogne/orthanc 
@@ -8,7 +7,7 @@ services:
       - mynetwork
 
   app:
-    image: rafael-dosso-miclab
+    image: analise-imagens-medicas
     depends_on:
       - api
     networks:

@@ -38,9 +38,9 @@ O objetivo principal foi configurar um sistema PACS OrthanC, manipular arquivos 
 
 3. **Construa a imagem Docker da aplicação**:
    ```bash
-    sudo docker build -t rafael-dosso-miclab .
+    sudo docker build -t analise-imagens-medicas .
    ```
-   Este passo pode demorar um pouco, pois as instalações do TorchXRayVision são extensas.
+   Este passo pode demorar um pouco, pois as instalações do TorchXRayVision são volumosas.
 4. **Execute o contêiner composto da aplicação e do PACs Orthanc**:
    ```bash
     sudo docker compose up --build
