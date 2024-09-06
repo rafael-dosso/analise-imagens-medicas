@@ -26,12 +26,12 @@ O objetivo principal foi configurar um sistema PACS OrthanC, manipular arquivos 
 1. **Clone o repositório**:
 
    ```bash
-   git clone https://github.com/rafael-dosso/projeto-miclab.git
+   git clone https://github.com/rafael-dosso/analise-imagens-medicas.git
    ```
 2. **Navegue até o diretório do projeto**:
 
    ```bash
-    cd projeto-miclab
+    cd analise-imagens-medicas
    ```
 
 #### Execução via Docker
