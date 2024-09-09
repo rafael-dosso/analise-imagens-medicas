@@ -1,14 +1,6 @@
 import httplib2
 import base64
 
-# sudo docker run -p 4242:4242 -p 8042:8042 --rm -v /etc/orthanc/orthanc.json:/etc/orthanc/orthanc.json:ro jodogne/orthanc:1.12.4
-
-"""
-IMPORTANTE: se você estiver rodando este código localmente, com a API do Orthanc
-na sua máquina, use a linha com  da url com o 'localhost'. Se você for rodar a imagem gerada
-pelo dockerfile, use a linha com o 'api'.
-"""
-
 def post_file(file_path: str, api_address: str)->None:
     """
     Envia o arquivo especificado para a API do Orthanc
