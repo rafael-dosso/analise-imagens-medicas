@@ -2,7 +2,7 @@ from send_dicom import post_file
 from analyze_dcm_image import get_diagnosis
 from create_sr import create_sr
 from pathlib import Path
-import numpy as np
+import sys
 import json
 
 def main():
@@ -14,6 +14,12 @@ def main():
         3. Cria um DICOM Structured SR para a imagem inicial com os diagnósticos obtidos e
         o envia para o PACs Orthanc;
     """
+    # Se for passado um endereço para a api, usá-lo. Se não, usar o padrão de localhost:8042
+    if len(sys.argv) > 1:
+        api_address = sys.argv[1]
+    else:
+        api_address = 'http://localhost:8042'
+
     # Lista todos os arquivos .dcm na pasta e aplica as regras de negócio a todos eles
     path = Path("dicom_samples/")
     dicom_files = path.rglob("*.dcm")  # rglob é usado para buscar arquivos recursivamente
@@ -25,7 +31,7 @@ def main():
             print('\n============================================\n')
             # Sobe o arquivo para o OrthanC
             print(f"Arquivo atual: {file_path.name}")
-            post_file(file_path)
+            post_file(file_path, api_address)
 
             diagnosis = get_diagnosis(file_path)
 
@@ -37,7 +43,7 @@ def main():
             # Cria o SR para a imagem e envia para o Orthanc
             sr_path = file_folder + '/structured_report.dcm'
             create_sr(file_path, sr_path, diagnosis=diagnosis)
-            post_file(sr_path)
+            post_file(sr_path, api_address)
         except Exception as e:
             print('Ocorreu um erro com o arquivo. Mensagem de erro:', e)
         

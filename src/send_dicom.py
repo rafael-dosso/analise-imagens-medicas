@@ -8,15 +8,16 @@ IMPORTANTE: se você estiver rodando este código localmente, com a API do Ortha
 na sua máquina, use a linha com  da url com o 'localhost'. Se você for rodar a imagem gerada
 pelo dockerfile, use a linha com o 'api'.
 """
-# orthanc_url = 'http://localhost:8042/instances' 
-orthanc_url = 'http://api:8042/instances'
 
-def post_file(file_path: str)->None:
+def post_file(file_path: str, api_address: str)->None:
     """
     Envia o arquivo especificado para a API do Orthanc
     Args:
         file_path (str): Caminho do arquivo que se deseja enviar
+        api_address (str): Caminho da API do Orthanc
     """
+    orthanc_url = api_address + '/instances'
+
     headers = { 'content-type' : 'application/dicom' }
     creds_str_bytes = "orthanc:orthanc".encode('ascii') # Credenciais de autenticação no formato usuario:senha. Se substitua se necessario
     creds_str_bytes_b64 = b'Basic ' + base64.b64encode(creds_str_bytes)
