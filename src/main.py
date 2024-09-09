@@ -25,7 +25,7 @@ def main():
     dicom_files = path.rglob("*.dcm")  # rglob é usado para buscar arquivos recursivamente
 
     analysis_results_path = 'results/analysis'
-    sr_results_path = 'results/structured_reports'
+    sr_results_path = 'results/reports'
     
     for file_path in dicom_files:
         try:
@@ -38,12 +38,12 @@ def main():
 
             # Registra um .json com as conslusões do modelo no mesmo diretório do .dcm
             file_folder = str(file_path.parent)
-            json_path = f'{analysis_results_path}/{file_path.name.removesuffix('.dcm')}.json'
-            with open(json_path) as json_file:
+            json_path = f"{analysis_results_path}/{file_path.name.removesuffix('.dcm')}.json"
+            with open(json_path, 'w') as json_file:
                 json.dump(diagnosis, json_file, indent=4)
 
             # Cria o SR para a imagem e envia para o Orthanc
-            sr_path = f'{sr_results_path}/sr_{file_path.name.removesuffix('.dcm')}.dcm'
+            sr_path = f"{sr_results_path}/sr_{file_path.name.removesuffix('.dcm')}.dcm"
             create_sr(file_path, sr_path, diagnosis=diagnosis)
             post_file(sr_path, api_address)
         except Exception as e:
