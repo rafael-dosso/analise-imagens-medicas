@@ -7,7 +7,6 @@
    * This is not done in this configuration file since we don't know 
    * where Orthanc is going to be installed.
    **/
-  "AuthenticationEnabled": false
 
   // The logical name of this instance of Orthanc. This one is
   // displayed in Orthanc Explorer and at the URI "/system".

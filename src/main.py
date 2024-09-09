@@ -23,10 +23,11 @@ def main():
     # Lista todos os arquivos .dcm na pasta e aplica as regras de negócio a todos eles
     path = Path("dicom_samples/")
     dicom_files = path.rglob("*.dcm")  # rglob é usado para buscar arquivos recursivamente
+
+    analysis_results_path = 'results/analysis'
+    sr_results_path = 'results/structured_reports'
     
     for file_path in dicom_files:
-        if file_path.name == 'structured_report.dcm': continue # Ignora os arquivos SR
-
         try:
             print('\n============================================\n')
             # Sobe o arquivo para o OrthanC
@@ -37,11 +38,12 @@ def main():
 
             # Registra um .json com as conslusões do modelo no mesmo diretório do .dcm
             file_folder = str(file_path.parent)
-            with open(file_folder + '/diagnosis.json', 'w') as json_file:
+            json_path = f'{analysis_results_path}/{file_path.name.removesuffix('.dcm')}.json'
+            with open(json_path) as json_file:
                 json.dump(diagnosis, json_file, indent=4)
 
             # Cria o SR para a imagem e envia para o Orthanc
-            sr_path = file_folder + '/structured_report.dcm'
+            sr_path = f'{sr_results_path}/sr_{file_path.name.removesuffix('.dcm')}.dcm'
             create_sr(file_path, sr_path, diagnosis=diagnosis)
             post_file(sr_path, api_address)
         except Exception as e:
