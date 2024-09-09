@@ -55,8 +55,6 @@ O visualizador web do Orthanc já estará acessível no endereço [localhost:804
 
 #### Execução local
 
-Para executar a aplicação Python localmente, a API do Orthanc deve estar rodando na sua máquina. Nesse caso, é necessário descomentar a linha 11 do arquivo `send_dicom.py` e comentar a linha 12. Isso fará com que as requisições sejam mandadas para o localhost em vez dos endereços definidos internamente pelo Docker, garantindo o funcionamento da aplicação.
-
 3. **Certifique-se de que está rodando o PACs Orthanc no endereço [localhost:8042](http://localhost:8042). Se não estiver, você pode usar a imagem [jodogne/orthanc](https://orthanc.uclouvain.be/book/users/docker.html):**
    ```bash
     sudo docker pull jodogne/orthanc
