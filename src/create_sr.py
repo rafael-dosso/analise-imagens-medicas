@@ -59,6 +59,15 @@ def create_sr(dicom_path:str, sr_output_path: str, diagnosis=None)->None:
     sr.ContentDate = datetime.now().strftime('%Y%m%d')  # Tag (0008,0023)
     sr.ContentTime = datetime.now().strftime('%H%M%S')  # Tag (0008,0033)
 
+    sr.StudyDescription = f'Diagnosis obtained over original image with InstanceNumber {dcm.InstanceNumber}'
+    sr.ProtocolName = dcm.ProtocolName
+
+    # Adiciona um pequeno cabeçalho para os dados
+    sr.ConceptNameCodeSequence = [Dataset()]
+    sr.ConceptNameCodeSequence[0].CodeValue = "121072"
+    sr.ConceptNameCodeSequence[0].CodingSchemeDesignator = 'DCM'
+    sr.ConceptNameCodeSequence[0].CodeMeaning = 'Diagnosis Percentages'
+
     # Obtém o diagnóstico se ele não foi gerado ainda
     if not diagnosis:
         diagnosis = get_diagnosis(dicom_path)

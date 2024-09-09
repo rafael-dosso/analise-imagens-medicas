@@ -46,7 +46,7 @@ O objetivo principal foi configurar um sistema PACS OrthanC, manipular arquivos 
     sudo docker compose up --build
    ```
 
-O visualizador web do Orthanc já estará acessível no endereço [localhost:8042](http://localhost:8042) após a execução do Docker Compose, e, em seguida, você poderá acompanhar o envio dos arquivos pelos logs da aplicação Python. Se for pedida alguma autenticação no PACs, o usuário e senha são ambos "orthanc".
+O visualizador web do Orthanc já estará acessível no endereço [localhost:8042](http://localhost:8042) após a execução do Docker Compose, e, em seguida, você poderá acompanhar o envio dos arquivos pelos logs da aplicação Python. Se for pedida alguma autenticação no PACs, o **usuário e senha são ambos "orthanc"**.
 
 5. **Após o uso, termine a aplicação:**
    ```bash
