@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Este projeto foi desenvolvido como parte de um processo seletivo para a iniciação científica em que trabalho atualmente, buscando simular interações com sistemas reais de ambiente hospitalar, incluindo o uso de PACS e arquivos DICOM.
+Este projeto foi desenvolvido como parte do processo seletivo para a iniciação científica em que trabalho atualmente, buscando simular interações com sistemas reais de ambiente hospitalar, incluindo o uso de PACS e arquivos DICOM.
 
 O objetivo principal foi configurar um sistema PACS OrthanC, manipular arquivos DICOM, realizar a classificação de achados utilizando um modelo pré-treinado, e criar e enviar relatórios estruturados DICOM (DICOM SR) para o PACS.
 
